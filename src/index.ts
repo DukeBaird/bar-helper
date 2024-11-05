@@ -72,8 +72,18 @@ app.put('/recipes/:id', (req, res) => {
 
 // Delete a recipe by ID
 app.delete('/recipes/:id', (req, res) => {
-  // Logic to delete a recipe by ID
-  res.send(`Recipe with ID ${req.params.id} deleted`);
+  const { id } = req.params;
+  recipes = recipes.filter(recipe => recipe.id != id); // id is a string, so we use != instead of !==
+
+  // Write the updated recipes array to the JSON file
+  fs.writeFile(recipesFilePath, JSON.stringify(recipes, null, 2), (err) => {
+    if (err) {
+      console.error('Error writing to recipes file:', err);
+      res.status(500).send('Internal Server Error');
+    } else {
+      res.status(200).send(`Recipe with ID ${id} deleted`);
+    }
+  });
 });
 
 // Endpoint to get a random recipe

@@ -38,13 +38,32 @@ const App: React.FC = () => {
     setRecipes([...recipes, newRecipe]);
   };
 
+  /**
+   * editRecipe - Logic to edit a recipe by ID.
+   * @param {number} id - The ID of the recipe to edit.
+   */
   const editRecipe = (id: number) => {
     // Logic to edit a recipe by ID
     console.log(`Edit recipe with ID ${id}`);
   };
 
-  const deleteRecipe = (id: number) => {
-    setRecipes(recipes.filter(recipe => recipe.id !== id));
+  /**
+   * deleteRecipe - Deletes a recipe by ID and removes it from the JSON file.
+   * @param {number} id - The ID of the recipe to delete.
+   */
+  const deleteRecipe = async (id: number) => {
+    try {
+      const response = await fetch(`http://${window.location.hostname}:3000/recipes/${id}`, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        setRecipes(recipes.filter(recipe => recipe.id !== id));
+      } else {
+        console.error('Error deleting recipe:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error deleting recipe:', error);
+    }
   };
 
   return (
