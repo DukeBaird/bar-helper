@@ -11,8 +11,10 @@ app.use(cors());
 
 let recipes: any[] = [];
 
+const recipesFilePath = path.join(__dirname, '../recipes.json');
+
 // Read recipes.json when the server launches
-fs.readFile(path.join(__dirname, '../recipes.json'), 'utf8', (err, data) => {
+fs.readFile(recipesFilePath, 'utf8', (err, data) => {
   if (err) {
     console.error('Error reading recipes.json:', err);
     return;
@@ -27,8 +29,21 @@ app.get('/', (req, res) => {
 
 // Create a new recipe
 app.post('/recipes', (req, res) => {
-  // Logic to create a recipe
-  res.status(201).send('Recipe created');
+  const newRecipe = {
+    id: recipes.length + 1, // Generate a new ID
+    ...req.body
+  };
+  recipes.push(newRecipe);
+
+  // Write the updated recipes array to the JSON file
+  fs.writeFile(recipesFilePath, JSON.stringify(recipes, null, 2), (err) => {
+    if (err) {
+      console.error('Error writing to recipes file:', err);
+      res.status(500).send('Internal Server Error');
+    } else {
+      res.status(201).send(`Recipe with ID ${newRecipe.id} created`);
+    }
+  });
 });
 
 // Read all recipes

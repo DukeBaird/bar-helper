@@ -1,30 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+
+interface Ingredient {
+  amount: string;
+  measurement: string;
+  item: string;
+}
 
 interface Recipe {
   id: number;
   name: string;
-  ingredients: { item: string; amount: number | null; measurement: string }[];
+  ingredients: Ingredient[];
   instructions: string;
 }
 
-const RecipesList: React.FC = () => {
-  const [recipes, setRecipes] = useState<Recipe[]>([]);
+interface RecipesListProps {
+  recipes: Recipe[];
+}
 
-  useEffect(() => {
-    fetch(`http://${window.location.hostname}:3000/recipes`)
-      .then(response => response.json())
-      .then(data => setRecipes(data))
-      .catch(error => console.error('Error fetching recipes:', error));
-  }, []);
-
+const RecipesList: React.FC<RecipesListProps> = ({ recipes }) => {
   return (
     <div>
-      <h1>Recipes</h1>
+      <h2>Recipes</h2>
       <ul>
-        {recipes.map(recipe => (
+        {recipes.map((recipe) => (
           <li key={recipe.id}>
-            <h2>{recipe.name}</h2>
-            <p>{recipe.instructions}</p>
+            <h3>{recipe.name}</h3>
             <ul>
               {recipe.ingredients.map((ingredient, index) => (
                 <li key={index}>
@@ -32,6 +32,7 @@ const RecipesList: React.FC = () => {
                 </li>
               ))}
             </ul>
+            <p>{recipe.instructions}</p>
           </li>
         ))}
       </ul>
