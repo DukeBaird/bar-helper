@@ -1,7 +1,12 @@
 import React from 'react';
+import RecipesList from './RecipesList';
 
 const App: React.FC = () => {
-  return <h1>Hello, React with TypeScript!</h1>;
+  return (
+    <div>
+      <RecipesList />
+    </div>
+  );
 };
 
 export default App;
