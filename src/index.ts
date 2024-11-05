@@ -64,16 +64,48 @@ app.get('/recipes/:id', (req, res) => {
   }
 });
 
-// Update a recipe by ID
+/**
+ * Update a recipe by ID
+ * @param {string} id - The ID of the recipe to update.
+ * @param {object} req.body - The updated recipe object.
+ * @returns {void}
+ */
 app.put('/recipes/:id', (req, res) => {
-  // Logic to update a recipe by ID
-  res.send(`Recipe with ID ${req.params.id} updated`);
+  const { id } = req.params;
+  const updatedRecipe = req.body;
+
+  const recipeIndex = recipes.findIndex(r => r.id == id);
+  if (recipeIndex !== -1) {
+    recipes[recipeIndex] = { ...recipes[recipeIndex], ...updatedRecipe };
+
+    // Write the updated recipes array to the JSON file
+    fs.writeFile(recipesFilePath, JSON.stringify(recipes, null, 2), (err) => {
+      if (err) {
+        console.error('Error writing to recipes file:', err);
+        res.status(500).send('Internal Server Error');
+      } else {
+        res.status(200).send(`Recipe with ID ${id} updated`);
+      }
+    });
+  } else {
+    res.status(404).send('Recipe not found');
+  }
 });
 
 // Delete a recipe by ID
 app.delete('/recipes/:id', (req, res) => {
-  // Logic to delete a recipe by ID
-  res.send(`Recipe with ID ${req.params.id} deleted`);
+  const { id } = req.params;
+  recipes = recipes.filter(recipe => recipe.id != id); // id is a string, so we use != instead of !==
+
+  // Write the updated recipes array to the JSON file
+  fs.writeFile(recipesFilePath, JSON.stringify(recipes, null, 2), (err) => {
+    if (err) {
+      console.error('Error writing to recipes file:', err);
+      res.status(500).send('Internal Server Error');
+    } else {
+      res.status(200).send(`Recipe with ID ${id} deleted`);
+    }
+  });
 });
 
 // Endpoint to get a random recipe
