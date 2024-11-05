@@ -19,8 +19,6 @@ interface Recipe {
   instructions: string;
 }
 
-const foo = 1;
-
 const App: React.FC = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
