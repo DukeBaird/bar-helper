@@ -1,4 +1,5 @@
 import React from 'react';
+import './RecipesList.css';
 
 // Interface representing an ingredient in a recipe
 interface Ingredient {
@@ -23,10 +24,11 @@ interface RecipesListProps {
 const RecipesList: React.FC<RecipesListProps> = ({ recipes }) => {
   return (
     <div className="recipes-list">
+      <h2>Recipes</h2>
       <section>
         <ul>
           {recipes.map((recipe) => (
-            <li key={recipe.id}>
+            <li key={recipe.id} className="recipe-item">
               <h3>{recipe.name}</h3>
               <ul>
                 {recipe.ingredients.map((ingredient, index) => (
