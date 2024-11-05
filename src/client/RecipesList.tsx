@@ -1,40 +1,45 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
+// Interface representing an ingredient in a recipe
+interface Ingredient {
+  amount: string;
+  measurement: string;
+  item: string;
+}
+
+// The Recipe interface represents a recipe with an id, name, list of ingredients, and instructions.
 interface Recipe {
   id: number;
   name: string;
-  ingredients: { item: string; amount: number | null; measurement: string }[];
+  ingredients: Ingredient[];
   instructions: string;
 }
 
-const RecipesList: React.FC = () => {
-  const [recipes, setRecipes] = useState<Recipe[]>([]);
+// Interface representing the props for the RecipesList component
+interface RecipesListProps {
+  recipes: Recipe[];
+}
 
-  useEffect(() => {
-    fetch(`http://${window.location.hostname}:3000/recipes`)
-      .then(response => response.json())
-      .then(data => setRecipes(data))
-      .catch(error => console.error('Error fetching recipes:', error));
-  }, []);
-
+const RecipesList: React.FC<RecipesListProps> = ({ recipes }) => {
   return (
-    <div>
-      <h1>Recipes</h1>
-      <ul>
-        {recipes.map(recipe => (
-          <li key={recipe.id}>
-            <h2>{recipe.name}</h2>
-            <p>{recipe.instructions}</p>
-            <ul>
-              {recipe.ingredients.map((ingredient, index) => (
-                <li key={index}>
-                  {ingredient.amount} {ingredient.measurement} {ingredient.item}
-                </li>
-              ))}
-            </ul>
-          </li>
-        ))}
-      </ul>
+    <div className="recipes-list">
+      <section>
+        <ul>
+          {recipes.map((recipe) => (
+            <li key={recipe.id}>
+              <h3>{recipe.name}</h3>
+              <ul>
+                {recipe.ingredients.map((ingredient, index) => (
+                  <li key={index}>
+                    {`${ingredient.amount} ${ingredient.measurement} ${ingredient.item}`}
+                  </li>
+                ))}
+              </ul>
+              <p>{recipe.instructions}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
     </div>
   );
 };

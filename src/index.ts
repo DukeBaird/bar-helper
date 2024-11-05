@@ -2,6 +2,7 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 import cors from 'cors';
+import { v4 as uuidv4 } from 'uuid';
 
 const app = express();
 const port = 3000;
@@ -11,8 +12,10 @@ app.use(cors());
 
 let recipes: any[] = [];
 
+const recipesFilePath = path.join(__dirname, '../recipes.json');
+
 // Read recipes.json when the server launches
-fs.readFile(path.join(__dirname, '../recipes.json'), 'utf8', (err, data) => {
+fs.readFile(recipesFilePath, 'utf8', (err, data) => {
   if (err) {
     console.error('Error reading recipes.json:', err);
     return;
@@ -27,8 +30,21 @@ app.get('/', (req, res) => {
 
 // Create a new recipe
 app.post('/recipes', (req, res) => {
-  // Logic to create a recipe
-  res.status(201).send('Recipe created');
+  const newRecipe = {
+    id: uuidv4(), // Generate a new unique ID
+    ...req.body
+  };
+  recipes.push(newRecipe);
+
+  // Write the updated recipes array to the JSON file
+  fs.writeFile(recipesFilePath, JSON.stringify(recipes, null, 2), (err) => {
+    if (err) {
+      console.error('Error writing to recipes file:', err);
+      res.status(500).send('Internal Server Error');
+    } else {
+      res.status(201).send(`Recipe with ID ${newRecipe.id} created`);
+    }
+  });
 });
 
 // Read all recipes
@@ -39,7 +55,7 @@ app.get('/recipes', (req, res) => {
 
 // Read a single recipe by ID
 app.get('/recipes/:id', (req, res) => {
-  const recipe = recipes.find(r => r.id === parseInt(req.params.id));
+  const recipe = recipes.find(r => r.id === req.params.id);
   if (recipe) {
     res.send(recipe);
   } else {
@@ -59,6 +75,7 @@ app.delete('/recipes/:id', (req, res) => {
   res.send(`Recipe with ID ${req.params.id} deleted`);
 });
 
+// Start the server and listen on the specified port
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
