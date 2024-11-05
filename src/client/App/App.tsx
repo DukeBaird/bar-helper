@@ -25,21 +25,22 @@ const App: React.FC = () => {
   const [randomRecipeId, setRandomRecipeId] = useState<number | null>(null);
   const [isFormVisible, setIsFormVisible] = useState<boolean>(false);
 
-  useEffect(() => {
-    /**
-     * fetchRecipes - Fetches recipes from the server.
-     * @returns {Promise<void>}
-     */
-    const fetchRecipes = async (): Promise<void> => {
-      try {
-        const response = await fetch(`http://${window.location.hostname}:3000/recipes`);
-        const data = await response.json();
-        setRecipes(data);
-      } catch (error) {
-        console.error('Error fetching recipes:', error);
-      }
-    };
+  /**
+   * fetchRecipes - Fetches recipes from the server.
+   * @returns {Promise<void>}
+   */
+  const fetchRecipes = async (): Promise<void> => {
+    try {
+      console.log('loading recipes');
+      const response = await fetch(`http://${window.location.hostname}:3000/recipes`);
+      const data = await response.json();
+      setRecipes(data);
+    } catch (error) {
+      console.error('Error fetching recipes:', error);
+    }
+  };
 
+  useEffect(() => {
     fetchRecipes();
   }, []);
 
@@ -132,6 +133,7 @@ const App: React.FC = () => {
           <button onClick={() => setIsFormVisible(!isFormVisible)} className="btn btn-add">
             {isFormVisible ? 'Hide Form' : 'Add Recipe'}
           </button>
+          <button onClick={fetchRecipes} className="btn btn-refresh">Re-fetch Recipes</button>
           {randomRecipeId !== null && (
             <button onClick={clearRandomRecipe} className="btn btn-clear">Clear Random Recipe</button>
           )}

@@ -26,7 +26,7 @@
 
 .btn {
   padding: 10px 20px;
-  background-color: #007bff;
+  background-color: #3cb371; /* Changed to a shade of green */
   color: white;
   border: none;
   border-radius: 4px;
@@ -34,7 +34,7 @@
 }
 
 .btn:hover {
-  background-color: #0056b3;
+  background-color: #2e8b57; /* Changed to a shade of green */
 }
 
 .btn-add {
@@ -43,10 +43,10 @@
 }
 
 .btn-remove {
-  background-color: #dc3545;
+  background-color: #8fbc8f; /* Changed to a shade of green */
   color: white;
 }
 
 .btn-remove:hover {
-  background-color: #c82333;
+  background-color: #6b8e23; /* Changed to a shade of green */
 }
