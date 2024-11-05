@@ -4,11 +4,11 @@ import RecipesList from '../RecipesList/RecipesList';
 import Header from '../Header/Header';
 import './App.css';
 
-interface Ingredient {
-  amount: string;
-  measurement: string;
-  item: string;
-}
+// interface Ingredient {
+//   amount: string;
+//   measurement: string;
+//   item: string;
+// }
 
 interface Recipe {
   id: number;
