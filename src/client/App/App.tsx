@@ -4,12 +4,6 @@ import RecipesList from '../RecipesList/RecipesList';
 import Header from '../Header/Header';
 import './App.css';
 
-// interface Ingredient {
-//   amount: string;
-//   measurement: string;
-//   item: string;
-// }
-
 interface Recipe {
   id: number;
   name: string;
@@ -19,6 +13,7 @@ interface Recipe {
 
 const App: React.FC = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>('');
 
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -82,12 +77,28 @@ const App: React.FC = () => {
     }
   };
 
+   /**
+   * filterRecipes - Filters recipes based on the search term.
+   * @param {string} term - The search term to filter recipes by.
+   * @returns {Recipe[]} - The filtered recipes.
+   */
+   const filterRecipes = (term: string): Recipe[] => {
+    return recipes.filter(recipe =>
+      recipe.name.toLowerCase().includes(term.toLowerCase()) ||
+      recipe.ingredients.some(ingredient =>
+        ingredient.item.toLowerCase().includes(term.toLowerCase())
+      )
+    );
+  };
+
+  const filteredRecipes = filterRecipes(searchTerm);
+
   return (
     <div>
-      <Header />
+      <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <div className="container">
         <AddRecipeForm addRecipe={addRecipe} />
-        <RecipesList recipes={recipes} onEdit={editRecipe} onDelete={deleteRecipe} />
+        <RecipesList recipes={filteredRecipes} onEdit={editRecipe} onDelete={deleteRecipe} />
         </div>
     </div>
   );

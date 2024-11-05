@@ -25,7 +25,7 @@ fs.readFile(recipesFilePath, 'utf8', (err, data) => {
     return;
   }
   recipes = JSON.parse(data);
-  console.log('Recipes loaded:', recipes);
+  console.log('Recipes loaded!');
 });
 
 app.get('/', (req, res) => {
