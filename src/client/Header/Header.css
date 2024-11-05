@@ -1,5 +1,5 @@
 .app-header {
-  background-color: forestgreen;
+  background-color: #32cd32; /* Changed to a shade of green */
   color: white;
   padding: 20px;
   text-align: center;
@@ -8,4 +8,9 @@
 
 .app-header h1 {
   margin: 0;
+}
+
+.cocktail-icon {
+  margin-right: 10px;
+  color: white; /* Ensure the icon color matches the text color */
 }

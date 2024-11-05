@@ -1,5 +1,6 @@
 import React from 'react';
 import './Header.css';
+import { FaCocktail } from 'react-icons/fa';
 
 interface HeaderProps {
   searchTerm: string;
@@ -9,7 +10,10 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ searchTerm, setSearchTerm }) => {
   return (
     <header className="app-header">
-      <h1>Recipe App</h1>
+      <h1>
+        <FaCocktail className="cocktail-icon" />
+        Recipe App
+      </h1>
       <input
         type="text"
         placeholder="Search recipes..."

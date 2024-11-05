@@ -20,9 +20,13 @@
 }
 
 .btn-random {
-  background-color: #007bff;
+  background-color: #32cd32; /* Changed to a shade of green */
 }
 
 .btn-add {
-  background-color: #28a745;
+  background-color: #66cdaa; /* Changed to a shade of green */
+}
+
+.btn-refresh {
+  background-color: #228b22; /* Changed to a shade of green */
 }

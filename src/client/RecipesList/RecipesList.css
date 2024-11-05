@@ -9,7 +9,7 @@
 
 .recipes-list h2 {
   text-align: center;
-  color: #333;
+  color: #2e8b57; /* Changed to a shade of green */
 }
 
 .recipe-card {
@@ -23,7 +23,7 @@
 
 .recipe-card h3 {
   margin-top: 0;
-  color: #007bff;
+  color: #3cb371; /* Changed to a shade of green */
 }
 
 .recipe-card ul {
@@ -36,11 +36,11 @@
 
 .recipe-card p {
   margin-top: 10px;
-  color: #555;
+  color: #6b8e23; /* Changed to a shade of green */
 }
 
 .recipe-card.highlight {
-  background-color: yellow;
+  background-color: #9acd32; /* Changed to a shade of green */
 }
 
 .scaling-factor-container {
