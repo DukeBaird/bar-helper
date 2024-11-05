@@ -1,14 +1,14 @@
 import React from 'react';
 import './RecipesList.css';
 
-// Interface representing an ingredient in a recipe
+// Interface representing a single ingredient
 interface Ingredient {
   amount: string;
   measurement: string;
   item: string;
 }
 
-// The Recipe interface represents a recipe with an id, name, list of ingredients, and instructions.
+// Interface representing a single recipe
 interface Recipe {
   id: number;
   name: string;
@@ -19,9 +19,11 @@ interface Recipe {
 // Interface representing the props for the RecipesList component
 interface RecipesListProps {
   recipes: Recipe[];
+  onEdit: (id: number) => void;
+  onDelete: (id: number) => void;
 }
 
-const RecipesList: React.FC<RecipesListProps> = ({ recipes }) => {
+const RecipesList: React.FC<RecipesListProps> = ({ recipes, onEdit, onDelete }) => {
   return (
     <div className="recipes-list">
       <h2>Recipes</h2>
@@ -38,6 +40,8 @@ const RecipesList: React.FC<RecipesListProps> = ({ recipes }) => {
                 ))}
               </ul>
               <p>{recipe.instructions}</p>
+              <button onClick={() => onEdit(recipe.id)} className="btn btn-edit">Edit</button>
+              <button onClick={() => onDelete(recipe.id)} className="btn btn-delete">Delete</button>
             </li>
           ))}
         </ul>

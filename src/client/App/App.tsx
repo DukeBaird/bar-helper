@@ -4,6 +4,11 @@ import RecipesList from '../RecipesList/RecipesList';
 import Header from '../Header/Header';
 import './App.css';
 
+interface Ingredient {
+  amount: string;
+  measurement: string;
+  item: string;
+}
 
 interface Recipe {
   id: number;
@@ -33,13 +38,22 @@ const App: React.FC = () => {
     setRecipes([...recipes, newRecipe]);
   };
 
+  const editRecipe = (id: number) => {
+    // Logic to edit a recipe by ID
+    console.log(`Edit recipe with ID ${id}`);
+  };
+
+  const deleteRecipe = (id: number) => {
+    setRecipes(recipes.filter(recipe => recipe.id !== id));
+  };
+
   return (
     <div>
       <Header />
       <div className="container">
         <AddRecipeForm addRecipe={addRecipe} />
-        <RecipesList recipes={recipes} />
-      </div>
+        <RecipesList recipes={recipes} onEdit={editRecipe} onDelete={deleteRecipe} />
+        </div>
     </div>
   );
 };
