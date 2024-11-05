@@ -41,10 +41,26 @@ const App: React.FC = () => {
   /**
    * editRecipe - Logic to edit a recipe by ID.
    * @param {number} id - The ID of the recipe to edit.
+   * @param {Recipe} updatedRecipe - The updated recipe object.
+   * @returns {Promise<void>}
    */
-  const editRecipe = (id: number) => {
-    // Logic to edit a recipe by ID
-    console.log(`Edit recipe with ID ${id}`);
+  const editRecipe = async (id: number, updatedRecipe: Recipe): Promise<void> => {
+    try {
+      const response = await fetch(`http://${window.location.hostname}:3000/recipes/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedRecipe),
+      });
+      if (response.ok) {
+        setRecipes(recipes.map(recipe => (recipe.id === id ? updatedRecipe : recipe)));
+      } else {
+        console.error('Error editing recipe:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error editing recipe:', error);
+    }
   };
 
   /**
