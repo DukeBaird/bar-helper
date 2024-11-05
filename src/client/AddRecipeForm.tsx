@@ -25,8 +25,11 @@ const AddRecipeForm: React.FC<AddRecipeFormProps> = ({ addRecipe }) => {
 
   const handleIngredientChange = (index: number, field: keyof Ingredient, value: string) => {
     const newIngredients = [...ingredients];
-    newIngredients[index][field] = value;
-    setIngredients(newIngredients);
+    setIngredients((prevIngredients) => {
+      const newIngredients = [...prevIngredients];
+      newIngredients[index] = { ...newIngredients[index], [field]: value };
+      return newIngredients;
+    });
   };
 
   const handleAddIngredient = () => {

@@ -2,6 +2,7 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 import cors from 'cors';
+import { v4 as uuidv4 } from 'uuid';
 
 const app = express();
 const port = 3000;
@@ -30,7 +31,7 @@ app.get('/', (req, res) => {
 // Create a new recipe
 app.post('/recipes', (req, res) => {
   const newRecipe = {
-    id: recipes.length + 1, // Generate a new ID
+    id: uuidv4(), // Generate a new unique ID
     ...req.body
   };
   recipes.push(newRecipe);
@@ -54,7 +55,7 @@ app.get('/recipes', (req, res) => {
 
 // Read a single recipe by ID
 app.get('/recipes/:id', (req, res) => {
-  const recipe = recipes.find(r => r.id === parseInt(req.params.id));
+  const recipe = recipes.find(r => r.id === req.params.id);
   if (recipe) {
     res.send(recipe);
   } else {
@@ -74,6 +75,7 @@ app.delete('/recipes/:id', (req, res) => {
   res.send(`Recipe with ID ${req.params.id} deleted`);
 });
 
+// Start the server and listen on the specified port
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
