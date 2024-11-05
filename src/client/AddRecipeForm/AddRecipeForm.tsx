@@ -77,67 +77,62 @@ const AddRecipeForm: React.FC<AddRecipeFormProps> = ({ addRecipe }) => {
 
   return (
     <div className="add-recipe-form-container">
-      <button onClick={() => setIsFormVisible(!isFormVisible)}>
-        {isFormVisible ? 'Hide Form' : 'Add Recipe'}
-      </button>
-      {isFormVisible && (
-        <form className="add-recipe-form" onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="name">Recipe Name:</label>
-            <input
-              type="text"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="form-control"
-            />
-          </div>
-          <div className="form-group">
-            <label>Ingredients:</label>
-            {ingredients.map((ingredient, index) => (
-              <div key={index} className="ingredient-group">
-                <input
-                  type="text"
-                  placeholder="Amount"
-                  value={ingredient.amount}
-                  onChange={(e) => handleIngredientChange(index, 'amount', e.target.value)}
-                  className="form-control"
-                />
-                <input
-                  type="text"
-                  placeholder="Measurement"
-                  value={ingredient.measurement}
-                  onChange={(e) => handleIngredientChange(index, 'measurement', e.target.value)}
-                  className="form-control"
-                />
-                <input
-                  type="text"
-                  placeholder="Item"
-                  value={ingredient.item}
-                  onChange={(e) => handleIngredientChange(index, 'item', e.target.value)}
-                  className="form-control"
-                />
-                <button type="button" onClick={() => handleRemoveIngredient(index)} className="btn btn-remove">
-                  Remove
-                </button>
-              </div>
-            ))}
-            <button type="button" onClick={handleAddIngredient} className="btn btn-add">
-              Add Additional Ingredient
-            </button>
-          </div>
-          <div className="form-group">
-            <label htmlFor="instructions">Instructions:</label>
-            <textarea
-              id="instructions"
-              value={instructions}
-              onChange={(e) => setInstructions(e.target.value)}
-              className="form-control"
-            />
-          </div>
-          <button type="submit" className="btn btn-primary">Add Recipe</button>
-        </form>
-      )}
+      <form className="add-recipe-form" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="name">Recipe Name:</label>
+          <input
+            type="text"
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="form-control"
+          />
+        </div>
+        <div className="form-group">
+          <label>Ingredients:</label>
+          {ingredients.map((ingredient, index) => (
+            <div key={index} className="ingredient-group">
+              <input
+                type="text"
+                placeholder="Amount"
+                value={ingredient.amount}
+                onChange={(e) => handleIngredientChange(index, 'amount', e.target.value)}
+                className="form-control"
+              />
+              <input
+                type="text"
+                placeholder="Measurement"
+                value={ingredient.measurement}
+                onChange={(e) => handleIngredientChange(index, 'measurement', e.target.value)}
+                className="form-control"
+              />
+              <input
+                type="text"
+                placeholder="Item"
+                value={ingredient.item}
+                onChange={(e) => handleIngredientChange(index, 'item', e.target.value)}
+                className="form-control"
+              />
+              <button type="button" onClick={() => handleRemoveIngredient(index)} className="btn btn-remove">
+                Remove
+              </button>
+            </div>
+          ))}
+          <button type="button" onClick={handleAddIngredient} className="btn btn-add">
+            Add Additional Ingredient
+          </button>
+        </div>
+        <div className="form-group">
+          <label htmlFor="instructions">Instructions:</label>
+          <textarea
+            id="instructions"
+            value={instructions}
+            onChange={(e) => setInstructions(e.target.value)}
+            className="form-control"
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">Add Recipe</button>
+      </form>
     </div>
   );
 };

@@ -21,9 +21,10 @@ interface RecipesListProps {
   recipes: Recipe[];
   onEdit: (id: number, updatedRecipe: Recipe) => void;
   onDelete: (id: number) => void;
+  randomRecipeId: number | null;
 }
 
-const RecipesList: React.FC<RecipesListProps> = ({ recipes, onEdit, onDelete }) => {
+const RecipesList: React.FC<RecipesListProps> = ({ recipes, onEdit, onDelete, randomRecipeId }) => {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editedRecipe, setEditedRecipe] = useState<Recipe | null>(null);
 
@@ -55,7 +56,7 @@ const RecipesList: React.FC<RecipesListProps> = ({ recipes, onEdit, onDelete }) 
       <section>
         <ul>
           {recipes.map((recipe) => (
-            <li key={recipe.id} className="recipe-item">
+            <li key={recipe.id} className={`recipe-item ${randomRecipeId === recipe.id ? 'highlight' : ''}`}>
               {editingId === recipe.id ? (
                 <>
                   <input

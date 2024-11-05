@@ -4,19 +4,33 @@ import RecipesList from '../RecipesList/RecipesList';
 import Header from '../Header/Header';
 import './App.css';
 
+// Interface representing a single ingredient
+interface Ingredient {
+  amount: string;
+  measurement: string;
+  item: string;
+}
+
+// Interface representing a single recipe
 interface Recipe {
   id: number;
   name: string;
-  ingredients: { amount: string; measurement: string; item: string }[];
+  ingredients: Ingredient[];
   instructions: string;
 }
 
 const App: React.FC = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [randomRecipeId, setRandomRecipeId] = useState<number | null>(null);
+  const [isFormVisible, setIsFormVisible] = useState<boolean>(false);
 
   useEffect(() => {
-    const fetchRecipes = async () => {
+    /**
+     * fetchRecipes - Fetches recipes from the server.
+     * @returns {Promise<void>}
+     */
+    const fetchRecipes = async (): Promise<void> => {
       try {
         const response = await fetch(`http://${window.location.hostname}:3000/recipes`);
         const data = await response.json();
@@ -29,12 +43,16 @@ const App: React.FC = () => {
     fetchRecipes();
   }, []);
 
-  const addRecipe = (newRecipe: Recipe) => {
+  /**
+   * addRecipe - Adds a new recipe to the list.
+   * @param {Recipe} newRecipe - The new recipe to add.
+   */
+  const addRecipe = (newRecipe: Recipe): void => {
     setRecipes([...recipes, newRecipe]);
   };
 
   /**
-   * editRecipe - Logic to edit a recipe by ID.
+   * editRecipe - Edits a recipe by ID.
    * @param {number} id - The ID of the recipe to edit.
    * @param {Recipe} updatedRecipe - The updated recipe object.
    * @returns {Promise<void>}
@@ -50,8 +68,6 @@ const App: React.FC = () => {
       });
       if (response.ok) {
         setRecipes(recipes.map(recipe => (recipe.id === id ? updatedRecipe : recipe)));
-      } else {
-        console.error('Error editing recipe:', response.statusText);
       }
     } catch (error) {
       console.error('Error editing recipe:', error);
@@ -59,30 +75,29 @@ const App: React.FC = () => {
   };
 
   /**
-   * deleteRecipe - Deletes a recipe by ID and removes it from the JSON file.
+   * deleteRecipe - Deletes a recipe by ID.
    * @param {number} id - The ID of the recipe to delete.
+   * @returns {Promise<void>}
    */
-  const deleteRecipe = async (id: number) => {
+  const deleteRecipe = async (id: number): Promise<void> => {
     try {
       const response = await fetch(`http://${window.location.hostname}:3000/recipes/${id}`, {
         method: 'DELETE',
       });
       if (response.ok) {
         setRecipes(recipes.filter(recipe => recipe.id !== id));
-      } else {
-        console.error('Error deleting recipe:', response.statusText);
       }
     } catch (error) {
       console.error('Error deleting recipe:', error);
     }
   };
 
-   /**
+  /**
    * filterRecipes - Filters recipes based on the search term.
-   * @param {string} term - The search term to filter recipes by.
+   * @param {string} term - The search term to filter recipes.
    * @returns {Recipe[]} - The filtered recipes.
    */
-   const filterRecipes = (term: string): Recipe[] => {
+  const filterRecipes = (term: string): Recipe[] => {
     return recipes.filter(recipe =>
       recipe.name.toLowerCase().includes(term.toLowerCase()) ||
       recipe.ingredients.some(ingredient =>
@@ -93,13 +108,37 @@ const App: React.FC = () => {
 
   const filteredRecipes = filterRecipes(searchTerm);
 
+  /**
+   * selectRandomRecipe - Selects a random recipe from the filtered recipes and sets it as the random recipe.
+   */
+  const selectRandomRecipe = (): void => {
+    const randomIndex = Math.floor(Math.random() * filteredRecipes.length);
+    setRandomRecipeId(filteredRecipes[randomIndex].id);
+  };
+
+  /**
+   * clearRandomRecipe - Clears the selected random recipe.
+   */
+  const clearRandomRecipe = (): void => {
+    setRandomRecipeId(null);
+  };
+
   return (
     <div>
       <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <div className="container">
-        <AddRecipeForm addRecipe={addRecipe} />
-        <RecipesList recipes={filteredRecipes} onEdit={editRecipe} onDelete={deleteRecipe} />
+        <div className="button-row">
+          <button onClick={selectRandomRecipe} className="btn btn-random">Random Recipe</button>
+          <button onClick={() => setIsFormVisible(!isFormVisible)} className="btn btn-add">
+            {isFormVisible ? 'Hide Form' : 'Add Recipe'}
+          </button>
+          {randomRecipeId !== null && (
+            <button onClick={clearRandomRecipe} className="btn btn-clear">Clear Random Recipe</button>
+          )}
         </div>
+        {isFormVisible && <AddRecipeForm addRecipe={addRecipe} />}
+        <RecipesList recipes={filteredRecipes} onEdit={editRecipe} onDelete={deleteRecipe} randomRecipeId={randomRecipeId} />
+      </div>
     </div>
   );
 };
