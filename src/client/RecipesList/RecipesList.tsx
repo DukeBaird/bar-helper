@@ -27,6 +27,7 @@ interface RecipesListProps {
 const RecipesList: React.FC<RecipesListProps> = ({ recipes, onEdit, onDelete, randomRecipeId }) => {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editedRecipe, setEditedRecipe] = useState<Recipe | null>(null);
+  const [scalingFactor, setScalingFactor] = useState(1);
 
   const handleEditClick = (recipe: Recipe) => {
     setEditingId(recipe.id);
@@ -42,6 +43,10 @@ const RecipesList: React.FC<RecipesListProps> = ({ recipes, onEdit, onDelete, ra
     }
   };
 
+  const handleScalingFactorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setScalingFactor(Number(e.target.value));
+  };
+
   const handleSaveClick = () => {
     if (editedRecipe) {
       onEdit(editingId!, editedRecipe);
@@ -53,22 +58,34 @@ const RecipesList: React.FC<RecipesListProps> = ({ recipes, onEdit, onDelete, ra
   return (
     <div className="recipes-list">
       <h2>Recipes</h2>
+      <div className="scaling-factor-container">
+        <label htmlFor="scalingFactor">Scaling Factor:</label>
+        <input
+          type="number"
+          id="scalingFactor"
+          value={scalingFactor}
+          onChange={handleScalingFactorChange}
+          className="form-control"
+        />
+      </div>
       <section>
-        <ul>
+        <div>
           {recipes.map((recipe) => (
-            <li key={recipe.id} className={`recipe-item ${randomRecipeId === recipe.id ? 'highlight' : ''}`}>
+            <li key={recipe.id} className={`recipe-card ${randomRecipeId === recipe.id ? 'highlight' : ''}`}>
               {editingId === recipe.id ? (
-                <>
+                <div className="recipe-edit-container">
                   <input
                     type="text"
+                    className="recipe-name-input"
                     value={editedRecipe?.name}
                     onChange={(e) => handleInputChange(e, 'name')}
                   />
-                  <ul>
+                  <div className="ingredients-list">
                     {editedRecipe?.ingredients.map((ingredient, index) => (
-                      <li key={index}>
+                      <li key={index} className="ingredient-row">
                         <input
                           type="text"
+                          className="amount-input"
                           value={ingredient.amount}
                           onChange={(e) => {
                             const newIngredients = [...editedRecipe.ingredients];
@@ -77,7 +94,8 @@ const RecipesList: React.FC<RecipesListProps> = ({ recipes, onEdit, onDelete, ra
                           }}
                         />
                         <input
-                          type="text"
+                          type="text" 
+                          className="measurement-input"
                           value={ingredient.measurement}
                           onChange={(e) => {
                             const newIngredients = [...editedRecipe.ingredients];
@@ -87,6 +105,7 @@ const RecipesList: React.FC<RecipesListProps> = ({ recipes, onEdit, onDelete, ra
                         />
                         <input
                           type="text"
+                          className="item-input"
                           value={ingredient.item}
                           onChange={(e) => {
                             const newIngredients = [...editedRecipe.ingredients];
@@ -96,22 +115,22 @@ const RecipesList: React.FC<RecipesListProps> = ({ recipes, onEdit, onDelete, ra
                         />
                       </li>
                     ))}
-                  </ul>
+                  </div>
                   <textarea
                     value={editedRecipe?.instructions}
                     onChange={(e) => handleInputChange(e, 'instructions')}
                   />
                   <button onClick={handleSaveClick} className="btn btn-save">Save</button>
-                </>
+                </div>
               ) : (
                 <>
                   <h3>{recipe.name}</h3>
-                  <ul>
+                  <div>
                     {recipe.ingredients.map((ingredient, index) => (
                       <li key={index}>
-                        {`${ingredient.amount ? ingredient.amount : ''} ${ingredient.measurement} ${ingredient.item}`}                      </li>
+                        {`${ingredient.amount ? parseInt(ingredient.amount) * scalingFactor : ''} ${ingredient.measurement} ${ingredient.item}`}                      </li>
                     ))}
-                  </ul>
+                  </div>
                   <p>{recipe.instructions}</p>
                   <button onClick={() => handleEditClick(recipe)} className="btn btn-edit">Edit</button>
                   <button onClick={() => onDelete(recipe.id)} className="btn btn-delete">Delete</button>
@@ -119,7 +138,7 @@ const RecipesList: React.FC<RecipesListProps> = ({ recipes, onEdit, onDelete, ra
               )}
             </li>
           ))}
-        </ul>
+        </div>
       </section>
     </div>
   );
