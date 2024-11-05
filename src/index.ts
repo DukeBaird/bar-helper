@@ -4,6 +4,7 @@ import path from 'path';
 import cors from 'cors';
 import { v4 as uuidv4 } from 'uuid';
 import { getRandomRecipe } from './server/recipeUtils';
+import { Recipe } from './types';
 
 const app = express();
 const port = 3000;
@@ -11,7 +12,9 @@ const port = 3000;
 app.use(express.json());
 app.use(cors());
 
-let recipes: any[] = [];
+
+// Example usage of the Recipe type
+let recipes: Recipe[] = [];
 
 const recipesFilePath = path.join(__dirname, '../recipes.json');
 
