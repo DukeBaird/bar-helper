@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import cors from 'cors';
 import { v4 as uuidv4 } from 'uuid';
+import { getRandomRecipe } from './server/recipeUtils';
 
 const app = express();
 const port = 3000;
@@ -73,6 +74,12 @@ app.put('/recipes/:id', (req, res) => {
 app.delete('/recipes/:id', (req, res) => {
   // Logic to delete a recipe by ID
   res.send(`Recipe with ID ${req.params.id} deleted`);
+});
+
+// Endpoint to get a random recipe
+app.get('/random-recipe', (req, res) => {
+  const randomRecipe = getRandomRecipe(recipes);
+  res.send(randomRecipe);
 });
 
 // Start the server and listen on the specified port
