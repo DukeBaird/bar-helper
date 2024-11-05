@@ -22,7 +22,6 @@ const AddRecipeForm: React.FC<AddRecipeFormProps> = ({ addRecipe }) => {
   const [name, setName] = useState('');
   const [ingredients, setIngredients] = useState<Ingredient[]>([{ amount: '', measurement: '', item: '' }]);
   const [instructions, setInstructions] = useState('');
-  const [isFormVisible, setIsFormVisible] = useState(false);
 
   const handleIngredientChange = (index: number, field: keyof Ingredient, value: string) => {
     setIngredients((prevIngredients) => {
