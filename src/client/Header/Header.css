@@ -1,0 +1,11 @@
+.app-header {
+  background-color: forestgreen;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.app-header h1 {
+  margin: 0;
+}

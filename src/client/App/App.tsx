@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import AddRecipeForm from './AddRecipeForm';
-import RecipesList from './RecipesList';
+import AddRecipeForm from '../AddRecipeForm/AddRecipeForm';
+import RecipesList from '../RecipesList/RecipesList';
+import Header from '../Header/Header';
+import './App.css';
+
 
 interface Recipe {
   id: number;
@@ -32,9 +35,11 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <h1>Recipe App</h1>
-      <AddRecipeForm addRecipe={addRecipe} />
-      <RecipesList recipes={recipes} />
+      <Header />
+      <div className="container">
+        <AddRecipeForm addRecipe={addRecipe} />
+        <RecipesList recipes={recipes} />
+      </div>
     </div>
   );
 };

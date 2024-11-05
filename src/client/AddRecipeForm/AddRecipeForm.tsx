@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './AddRecipeForm.css';
 
 interface Ingredient {
   amount: string;
@@ -24,7 +25,6 @@ const AddRecipeForm: React.FC<AddRecipeFormProps> = ({ addRecipe }) => {
   const [isFormVisible, setIsFormVisible] = useState(false);
 
   const handleIngredientChange = (index: number, field: keyof Ingredient, value: string) => {
-    const newIngredients = [...ingredients];
     setIngredients((prevIngredients) => {
       const newIngredients = [...prevIngredients];
       newIngredients[index] = { ...newIngredients[index], [field]: value };
@@ -61,8 +61,7 @@ const AddRecipeForm: React.FC<AddRecipeFormProps> = ({ addRecipe }) => {
       });
 
       if (response.ok) {
-        const createdRecipe = await response.json();
-        addRecipe(createdRecipe);
+        addRecipe(newRecipe);
         alert('Recipe added successfully!');
         setName('');
         setIngredients([{ amount: '', measurement: '', item: '' }]);
@@ -77,64 +76,66 @@ const AddRecipeForm: React.FC<AddRecipeFormProps> = ({ addRecipe }) => {
   };
 
   return (
-    <div>
+    <div className="add-recipe-form-container">
       <button onClick={() => setIsFormVisible(!isFormVisible)}>
         {isFormVisible ? 'Hide Form' : 'Add Recipe'}
       </button>
       {isFormVisible && (
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label>Name:</label>
+        <form className="add-recipe-form" onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="name">Recipe Name:</label>
             <input
               type="text"
+              id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              required
+              className="form-control"
             />
           </div>
-          <div>
+          <div className="form-group">
             <label>Ingredients:</label>
             {ingredients.map((ingredient, index) => (
-              <div key={index}>
+              <div key={index} className="ingredient-group">
                 <input
                   type="text"
                   placeholder="Amount"
                   value={ingredient.amount}
                   onChange={(e) => handleIngredientChange(index, 'amount', e.target.value)}
-                  required
+                  className="form-control"
                 />
                 <input
                   type="text"
                   placeholder="Measurement"
                   value={ingredient.measurement}
                   onChange={(e) => handleIngredientChange(index, 'measurement', e.target.value)}
-                  required
+                  className="form-control"
                 />
                 <input
                   type="text"
                   placeholder="Item"
                   value={ingredient.item}
                   onChange={(e) => handleIngredientChange(index, 'item', e.target.value)}
-                  required
+                  className="form-control"
                 />
-                <button type="button" onClick={() => handleRemoveIngredient(index)}>
+                <button type="button" onClick={() => handleRemoveIngredient(index)} className="btn btn-remove">
                   Remove
                 </button>
               </div>
             ))}
-            <button type="button" onClick={handleAddIngredient}>
-              Add Ingredient
+            <button type="button" onClick={handleAddIngredient} className="btn btn-add">
+              Add Additional Ingredient
             </button>
           </div>
-          <div>
-            <label>Instructions:</label>
+          <div className="form-group">
+            <label htmlFor="instructions">Instructions:</label>
             <textarea
+              id="instructions"
               value={instructions}
               onChange={(e) => setInstructions(e.target.value)}
-              required
+              className="form-control"
             />
           </div>
-          <button type="submit">Submit Recipe</button>
+          <button type="submit" className="btn btn-primary">Add Recipe</button>
         </form>
       )}
     </div>
