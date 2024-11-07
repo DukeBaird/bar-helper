@@ -12,6 +12,7 @@ interface Recipe {
   name: string;
   ingredients: Ingredient[];
   instructions: string;
+  glassware: string; // Add glassware field
 }
 
 interface AddRecipeFormProps {
@@ -22,6 +23,7 @@ const AddRecipeForm: React.FC<AddRecipeFormProps> = ({ addRecipe }) => {
   const [name, setName] = useState('');
   const [ingredients, setIngredients] = useState<Ingredient[]>([{ amount: '', measurement: '', item: '' }]);
   const [instructions, setInstructions] = useState('');
+  const [glassware, setGlassware] = useState('');
 
   const handleIngredientChange = (index: number, field: keyof Ingredient, value: string) => {
     setIngredients((prevIngredients) => {
@@ -48,6 +50,7 @@ const AddRecipeForm: React.FC<AddRecipeFormProps> = ({ addRecipe }) => {
       name,
       ingredients,
       instructions,
+      glassware // Add glassware field
     };
 
     try {
@@ -65,6 +68,7 @@ const AddRecipeForm: React.FC<AddRecipeFormProps> = ({ addRecipe }) => {
         setName('');
         setIngredients([{ amount: '', measurement: '', item: '' }]);
         setInstructions('');
+        setGlassware('');
       } else {
         alert('Failed to add recipe');
       }
@@ -120,6 +124,16 @@ const AddRecipeForm: React.FC<AddRecipeFormProps> = ({ addRecipe }) => {
           <button type="button" onClick={handleAddIngredient} className="btn btn-add">
             Add Additional Ingredient
           </button>
+        </div>
+        <div className="form-group">
+          <label htmlFor="glassware">Glassware:</label>
+          <input
+            type="text"
+            id="glassware"
+            value={glassware}
+            onChange={(e) => setGlassware(e.target.value)}
+            className="form-control"
+          />
         </div>
         <div className="form-group">
           <label htmlFor="instructions">Instructions:</label>

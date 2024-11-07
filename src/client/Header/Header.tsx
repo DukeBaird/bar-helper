@@ -20,6 +20,7 @@ const Header: React.FC<HeaderProps> = ({ searchTerm, setSearchTerm }) => {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
+      <button onClick={() => setSearchTerm('')} className="btn btn-clear-search">Clear</button>
     </header>
   );
 };

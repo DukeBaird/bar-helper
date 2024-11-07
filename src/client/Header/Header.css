@@ -14,3 +14,17 @@
   margin-right: 10px;
   color: white; /* Ensure the icon color matches the text color */
 }
+
+.btn-clear-search {
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #66cdaa; /* Changed to a shade of green */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-clear-search:hover {
+  background-color: #2e8b57; /* Changed to a shade of green */
+}
