@@ -17,6 +17,7 @@ interface Recipe {
   name: string;
   ingredients: Ingredient[];
   instructions: string;
+  glassware: string; // Add glassware field
 }
 
 const App: React.FC = () => {

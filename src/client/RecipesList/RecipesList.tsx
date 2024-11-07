@@ -14,6 +14,7 @@ interface Recipe {
   name: string;
   ingredients: Ingredient[];
   instructions: string;
+  glassware: string; // Add glassware field
 }
 
 // Interface representing the props for the RecipesList component
@@ -80,6 +81,12 @@ const RecipesList: React.FC<RecipesListProps> = ({ recipes, onEdit, onDelete, ra
                     value={editedRecipe?.name}
                     onChange={(e) => handleInputChange(e, 'name')}
                   />
+                  <input
+                    type="text"
+                    className="recipe-glassware-input"
+                    value={editedRecipe?.glassware}
+                    onChange={(e) => handleInputChange(e, 'glassware')}
+                  />
                   <div className="ingredients-list">
                     {editedRecipe?.ingredients.map((ingredient, index) => (
                       <li key={index} className="ingredient-row">
@@ -125,6 +132,7 @@ const RecipesList: React.FC<RecipesListProps> = ({ recipes, onEdit, onDelete, ra
               ) : (
                 <>
                   <h3>{recipe.name}</h3>
+                  <p>Glassware: {recipe.glassware}</p>
                   <div>
                     {recipe.ingredients.map((ingredient, index) => (
                       <li key={index}>
